@@ -37,7 +37,7 @@ EGYModalWebViewController *webViewController = [[EGYModalWebViewController alloc
 
 **Changing the bars tint color**
 
-Only **EGYModalWebViewController** supports custom tint colors using the @barsTintColor@ property.
+Only **EGYModalWebViewController** supports custom tint colors using the **barsTintColor** property.
 
 **Credits**
 
