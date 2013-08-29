@@ -16,7 +16,7 @@ __*Important note if your project doesn't use ARC*__: you must add the **-fobjc-
 **Installation**
 
 * Drag the **EGYWebViewController** / **EGYWebViewController** folder into your project. 
-* Drag the [ARChromeActivity, MLCruxActivity & TUSafariActivity] Folders into your project.
+* Drag the [__ARChromeActivity, MLCruxActivity & TUSafariActivity__] Folders into your project.
 
 **Usage**
 
