@@ -13,6 +13,14 @@ __*Important note if your project doesn't use ARC*__: you must add the **-fobjc-
 * Actions ( Share Link to [ Facebook, Twitter ] Send Link to [ Mail, CopyToPasteboard] Open Link in [ Safari, Chrome & Crux ] )
 * NavigationBar title set to the currently visible web page
 
+1
+
+![ScreenShot](https://raw.github.com/iMokhles/EGYWebViewController/master/IMG_0133.PNG)  
+
+2
+
+![ScreenShot](https://raw.github.com/iMokhles/EGYWebViewController/master/IMG_0134.PNG)
+
 **Installation**
 
 * Drag the **EGYWebViewController** / **EGYWebViewController** folder into your project. 
