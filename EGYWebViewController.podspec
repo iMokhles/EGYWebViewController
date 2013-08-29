@@ -2,7 +2,7 @@ Pod::Spec.new do |s|
   s.name         = "EGYWebViewController"
   s.version      = "1.0.1"
   s.summary      = "In-App Browser for iOS Apps Support UIActivity."
-  s.homepage     = "http://iMokhles.com/"
+  s.homepage     = "https://github.com/iMokhles/EGYWebViewController"
   s.license      = { :type => 'MIT', :file => 'LICENSE.txt' }
 
   s.author       = { "iMokhles" => "mokhleshussien@aol.com" }
