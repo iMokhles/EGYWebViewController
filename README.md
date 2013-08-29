@@ -3,7 +3,7 @@ EGYWebViewController
 
 In-App Browser for iOS Apps Support UIActivity ;)
 
-__*Important note if your project doesn't use ARC*: you must add the @-fobjc-arc@ compiler flag to @EGYWebViewController.m@ and @EGYModalWebViewController.m@ in Target Settings > Build Phases > Compile Sources.__
+__*Important note if your project doesn't use ARC*__: you must add the **-fobjc-arc** compiler flag to **EGYWebViewController.m** and **EGYModalWebViewController.m** in Target Settings > Build Phases > Compile Sources.
 
 **EGYWebViewController features:**
 
@@ -13,32 +13,32 @@ __*Important note if your project doesn't use ARC*: you must add the @-fobjc-arc
 * Actions ( Share Link to [ Facebook, Twitter ] Send Link to [ Mail, CopyToPasteboard] Open Link in [ Safari, Chrome & Crux ] )
 * NavigationBar title set to the currently visible web page
 
-h2. Installation
+**Installation**
 
-* Drag the @EGYWebViewController/EGYWebViewController@ folder into your project. 
+* Drag the **EGYWebViewController** / **EGYWebViewController** folder into your project. 
 
-h2. Usage
+**Usage**
 
-(see sample Xcode project in @/Demo@)
+(see sample Xcode project in **Demo**)
 
-Just like any UIViewController, EGYWebViewController can be pushed into a UINavigationController stack:
+Just like any UIViewController, **EGYWebViewController** can be pushed into a UINavigationController stack:
 
 <pre>
 EGYWebViewController *webViewController = [[EGYWebViewController alloc] initWithAddress:@"http://yahoo.com"];
 [self.navigationController pushViewController:webViewController animated:YES];
 </pre>
 
-It can also be presented modally using @EGYModalWebViewController@:
+It can also be presented modally using **EGYModalWebViewController**:
 
 <pre>
 EGYModalWebViewController *webViewController = [[EGYModalWebViewController alloc] initWithAddress:@"http://yahoo.com"];
 [self presentModalViewController:webViewController animated:YES];
 </pre>
 
-h3. Changing the bars tint color
+**Changing the bars tint color**
 
-Only @EGYModalWebViewController@ supports custom tint colors using the @barsTintColor@ property.
+Only **EGYModalWebViewController** supports custom tint colors using the @barsTintColor@ property.
 
-h2. Credits
+**Credits**
 
-EGYWebViewController is brought to you by *Mokhles Hussien* "(iMokhles)":http://iMokhles.com
+EGYWebViewController is brought to you by **Mokhles Hussien** "(iMokhles)":http://iMokhles.com
