@@ -41,7 +41,7 @@ It can also be presented modally using **EGYModalWebViewController**:
 
 <pre>
 EGYModalWebViewController *webViewController = [[EGYModalWebViewController alloc] initWithAddress:@"http://yahoo.com"];
-[self presentModalViewController:webViewController animated:YES];
+[self presentViewController:webViewController animated:YES completion:NULL];
 </pre>
 
 **Changing the bars tint color**
