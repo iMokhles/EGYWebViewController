@@ -54,4 +54,4 @@ Only **EGYModalWebViewController** supports custom tint colors using the **barsT
 
 **Credits**
 
-EGYWebViewController is brought to you by **Mokhles Hussien** "(iMokhles)":http://iMokhles.com
+EGYWebViewController is brought to you by **Mokhles Hussien** <a href="http://www.iMokhles.com/">@iMokhles</a>
