@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/iMokhles/EGYWebViewController.git", :tag => "1.2" }
   s.source_files  = "EGYWebViewController/*.{h,m}", "TUSafariActivity/*.{h,m}", "MLCruxActivity/*.{h,m}", "ARChromeActivity/*.{h,m}"
 
-  s.resource_bundle = { 'EGYWebViewController' => 'EGYWebViewController/EGYWebViewController.bundle/**/*.{png}' }
+  s.resource_bundle = { 'EGYWebViewController' => 'EGYWebViewController/EGYWebViewController.bundle/.' }
   s.resources = ["TUSafariActivity/*.png", "MLCruxActivity/*.png", "ARChromeActivity/*.png"]
 
   s.preserve_paths = "TUSafariActivity/*.lproj", "MLCruxActivity/*.lproj", "ARChromeActivity/*.lproj"
