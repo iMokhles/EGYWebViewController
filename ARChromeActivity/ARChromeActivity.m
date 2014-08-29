@@ -43,8 +43,25 @@
     return self;
 }
 
-- (UIImage *)activityImage {
-    return [UIImage imageNamed:@"ARChromeActivity"];
+- (UIImage *)activityImage {    
+    if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1) {
+        // do stuff for iOS 7 and newer
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            return [UIImage imageNamed:@"ARChromeActivity7~iPad"];
+        } else {
+            return [UIImage imageNamed:@"ARChromeActivity7"];
+        }
+        
+    } else {
+        // do stuff for older versions than iOS 7
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            return [UIImage imageNamed:@"ARChromeActivity~ipad"];
+        } else {
+            
+            return [UIImage imageNamed:@"ARChromeActivity"];
+        }
+    }
+    
 }
 
 - (NSString *)activityType {

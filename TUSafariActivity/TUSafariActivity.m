@@ -46,7 +46,23 @@
 
 - (UIImage *)activityImage
 {
-	return [UIImage imageNamed:@"Safari"];
+    if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1) {
+        // do stuff for iOS 7 and newer
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            return [UIImage imageNamed:@"Safari7-iPad"];
+        } else {
+            return [UIImage imageNamed:@"Safari7"];
+        }
+        
+    } else {
+        // do stuff for older versions than iOS 7
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            return [UIImage imageNamed:@"Safari~ipad"];
+        } else {
+            
+            return [UIImage imageNamed:@"Safari"];
+        }
+    }
 }
 
 - (BOOL)canPerformWithActivityItems:(NSArray *)activityItems

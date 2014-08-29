@@ -15,4 +15,6 @@
 - (id)initWithAddress:(NSString*)urlString;
 - (id)initWithURL:(NSURL*)URL;
 
+// Fixing @selector warning.
+- (void)doneButtonClicked:(id)sender;
 @end
