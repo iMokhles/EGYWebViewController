@@ -27,6 +27,8 @@
     return [self initWithURL:[NSURL URLWithString:urlString]];
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
 - (id)initWithURL:(NSURL *)URL {
     self.webViewController = [[EGYWebViewController alloc] initWithURL:URL];
     if (self = [super initWithRootViewController:self.webViewController]) {
@@ -34,6 +36,7 @@
     }
     return self;
 }
+#pragma clang diagnostic pop
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:NO];
