@@ -2,7 +2,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "EGYWebViewController"
-  s.version      = "1.2"
+  s.version      = "1.3"
   s.summary      = "In-App Browser for iOS Apps Support UIActivity."
   s.homepage     = "https://github.com/iMokhles/EGYWebViewController"
   s.license      = { :type => 'MIT', :file => 'LICENSE.txt' }
@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
   s.platform     = :ios, '6.0'
 
   s.ios.deployment_target = '6.0'
-  s.source       = { :git => "https://github.com/iMokhles/EGYWebViewController.git", :tag => "1.2" }
+  s.source       = { :git => "https://github.com/iMokhles/EGYWebViewController.git", :tag => "1.3" }
   s.source_files  = "EGYWebViewController/*.{h,m}", "TUSafariActivity/*.{h,m}", "MLCruxActivity/*.{h,m}", "ARChromeActivity/*.{h,m}"
 
   s.resource  = "EGYWebViewController/EGYWebViewController.bundle"
