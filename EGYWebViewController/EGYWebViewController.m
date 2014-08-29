@@ -122,6 +122,7 @@
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
+    [self updateNavigationBar];
     [self updateToolbarItems];
 }
 
@@ -173,7 +174,37 @@
     mainWebView.delegate = nil;
 }
 
- #pragma mark - Toolbar
+#pragma mark - NavigationBar
+- (void)updateNavigationBar {
+    // new method which let customize your navigationbar color and more
+    
+    //NSArray *ver = [[UIDevice currentDevice].systemVersion componentsSeparatedByString:@"."];
+    //if ([[ver objectAtIndex:0] intValue] >= 7) {
+    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
+        self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:0.369 green:0.373 blue:0.431 alpha:1.000];
+        self.navigationItem.backBarButtonItem.tintColor = [UIColor whiteColor];
+        [[self.navigationController navigationBar] setTintColor:[UIColor whiteColor]];
+        // self.navigationController.navigationBar.translucent = NO;
+    } else {
+        // tinit bar color
+        self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:0.369 green:0.373 blue:0.431 alpha:1.000];
+        // tinit item colors
+        self.navigationItem.backBarButtonItem.tintColor = [UIColor whiteColor];
+        [[self.navigationController navigationBar] setTintColor:[UIColor whiteColor]];
+    }
+    
+    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < 60000
+        [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:UITextAttributeTextColor]];
+#endif
+    }else {
+        // tint backbutton color if used with UINavigationController
+        [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:NSForegroundColorAttributeName]];
+    }
+    
+}
+
+#pragma mark - Toolbar
 
 - (void)updateToolbarItems {
     self.backBarButtonItem.enabled = self.mainWebView.canGoBack;
@@ -217,10 +248,10 @@
         
         UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, toolbarWidth, 44.0f)];
         toolbar.items = items;
-				toolbar.barStyle = self.navigationController.navigationBar.barStyle;
+        toolbar.barStyle = self.navigationController.navigationBar.barStyle;
         toolbar.tintColor = self.navigationController.navigationBar.tintColor;
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbar];
-    } 
+    }
     
     else {
         NSArray *items;
@@ -228,7 +259,7 @@
         if(self.URL == 0) {
             items = [NSArray arrayWithObjects:
                      flexibleSpace,
-                     self.backBarButtonItem, 
+                     self.backBarButtonItem,
                      flexibleSpace,
                      self.forwardBarButtonItem,
                      flexibleSpace,
@@ -238,7 +269,7 @@
         } else {
             items = [NSArray arrayWithObjects:
                      fixedSpace,
-                     self.backBarButtonItem, 
+                     self.backBarButtonItem,
                      flexibleSpace,
                      self.forwardBarButtonItem,
                      flexibleSpace,
@@ -249,8 +280,8 @@
                      nil];
         }
         
-				self.navigationController.toolbar.barStyle = self.navigationController.navigationBar.barStyle;
-				self.navigationController.toolbar.tintColor = self.navigationController.navigationBar.tintColor;
+        self.navigationController.toolbar.barStyle = self.navigationController.navigationBar.barStyle;
+        self.navigationController.toolbar.tintColor = self.navigationController.navigationBar.tintColor;
         self.toolbarItems = items;
     }
 }
@@ -265,7 +296,6 @@
 
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
-	[webView stopLoading];
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     
     self.navigationItem.title = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
@@ -273,7 +303,6 @@
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
-	[webView stopLoading];
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     [self updateToolbarItems];
 }
@@ -298,39 +327,39 @@
 }
 
 - (void)actionButtonClicked:(id)sender {
-
+    
     // activityItems
     NSURL *url = self.mainWebView.request.URL;
-   //NSString *text = [NSString stringWithFormat:@"This link shared from %@ Application", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"]];
+    //NSString *text = [NSString stringWithFormat:@"This link shared from %@ Application", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"]];
     NSArray *activityItems;
     activityItems = @[url /*text*/];
-
+    
     // activities
     TUSafariActivity     *safariActivity     = [[TUSafariActivity alloc] init];
     ARChromeActivity     *chromeActivity     = [[ARChromeActivity alloc] init];
     MLCruxActivity       *cruxActivity       = [[MLCruxActivity alloc] init];
-
+    
     NSArray *activities = @[
-    safariActivity,
-    chromeActivity,
-    cruxActivity,];
-
+                            safariActivity,
+                            chromeActivity,
+                            cruxActivity,];
+    
     // UIActivityViewController
     UIActivityViewController *activityView = [[UIActivityViewController alloc] initWithActivityItems:activityItems
                                                                                applicationActivities:activities];
-
+    
     /* Exclude default activity types for demo.
-       activityView.excludedActivityTypes = @[
-    //    UIActivityTypeAssignToContact,
-        UIActivityTypeCopyToPasteboard,
-        UIActivityTypePostToFacebook,
-        UIActivityTypePostToTwitter,
-        UIActivityTypePostToWeibo,
-    //    UIActivityTypePrint,
-        UIActivityTypeMail,
-        UIActivityTypeMessage,
-    //    UIActivityTypeSaveToCameraRoll,
-        ];
+     activityView.excludedActivityTypes = @[
+     //  UIActivityTypeAssignToContact,
+     UIActivityTypeCopyToPasteboard,
+     UIActivityTypePostToFacebook,
+     UIActivityTypePostToTwitter,
+     UIActivityTypePostToWeibo,
+     //  UIActivityTypePrint,
+     UIActivityTypeMail,
+     UIActivityTypeMessage,
+     //  UIActivityTypeSaveToCameraRoll,
+     ];
      */
     // show
     [self presentViewController:activityView animated:YES completion:nil];
