@@ -17,5 +17,5 @@
 - (id)initWithURL:(NSURL *)URL;
 
 @property (nonatomic, strong) UIColor *barsTintColor;
-
+@property (nonatomic, strong) UIColor *barItemsTintColor;
 @end

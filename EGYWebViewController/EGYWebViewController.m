@@ -122,7 +122,6 @@
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
-    [self updateNavigationBar];
     [self updateToolbarItems];
 }
 
@@ -136,6 +135,34 @@
     actionBarButtonItem = nil;
 }
 
+//- (void)viewDidAppear:(BOOL)animated {
+//    [super viewDidAppear:YES];
+//    
+//    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
+//#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_7_0
+//        if (self.barsTintColor != nil) {
+//            // Checked if not nil
+//            self.navigationController.navigationBar.tintColor = self.barsTintColor;
+//            self.navigationController.toolbar.tintColor = self.barsTintColor;
+//        } else if (self.barItemsTintColor != nil) {
+//            self.navigationItem.backBarButtonItem.tintColor = self.barItemsTintColor;
+//            [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObject:self.barItemsTintColor forKey:UITextAttributeTextColor]];
+//        }
+//#endif
+//    } else {
+//        if (self.barsTintColor != nil) {
+//            self.navigationController.navigationBar.barTintColor = self.barsTintColor;
+//            self.navigationController.toolbar.barTintColor = self.barsTintColor;
+//            self.navigationController.toolbar.translucent = NO;
+//        } else if (self.barItemsTintColor != nil) {
+//            self.navigationController.toolbar.tintColor = self.barItemsTintColor;
+//            self.navigationController.navigationItem.backBarButtonItem.tintColor = self.barItemsTintColor;
+//            self.navigationController.navigationBar.tintColor = self.barItemsTintColor;
+//            [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObject:self.barItemsTintColor forKey:NSForegroundColorAttributeName]];
+//        }
+//    }
+//}
+
 - (void)viewWillAppear:(BOOL)animated {
     NSAssert(self.navigationController, @"EGYWebViewController needs to be contained in a UINavigationController. If you are presenting EGYWebViewController modally, use EGYWebViewController instead.");
     
@@ -148,7 +175,6 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         [self.navigationController setToolbarHidden:YES animated:animated];
     }
@@ -172,36 +198,6 @@
     [mainWebView stopLoading];
  	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     mainWebView.delegate = nil;
-}
-
-#pragma mark - NavigationBar
-- (void)updateNavigationBar {
-    // new method which let customize your navigationbar color and more
-    
-    //NSArray *ver = [[UIDevice currentDevice].systemVersion componentsSeparatedByString:@"."];
-    //if ([[ver objectAtIndex:0] intValue] >= 7) {
-    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
-        self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:0.369 green:0.373 blue:0.431 alpha:1.000];
-        self.navigationItem.backBarButtonItem.tintColor = [UIColor whiteColor];
-        [[self.navigationController navigationBar] setTintColor:[UIColor whiteColor]];
-        // self.navigationController.navigationBar.translucent = NO;
-    } else {
-        // tinit bar color
-        self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:0.369 green:0.373 blue:0.431 alpha:1.000];
-        // tinit item colors
-        self.navigationItem.backBarButtonItem.tintColor = [UIColor whiteColor];
-        [[self.navigationController navigationBar] setTintColor:[UIColor whiteColor]];
-    }
-    
-    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
-#if __IPHONE_OS_VERSION_MIN_REQUIRED < 60000
-        [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:UITextAttributeTextColor]];
-#endif
-    }else {
-        // tint backbutton color if used with UINavigationController
-        [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:NSForegroundColorAttributeName]];
-    }
-    
 }
 
 #pragma mark - Toolbar
@@ -315,8 +311,8 @@
             UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, toolbarWidth, 44.0f)];
             toolbar.items = items;
             toolbar.barStyle = self.navigationController.navigationBar.barStyle;
-            toolbar.barTintColor = [UIColor colorWithRed:0.369 green:0.373 blue:0.431 alpha:1.000];
-            toolbar.tintColor = [UIColor whiteColor];
+            toolbar.barTintColor = self.navigationController.navigationBar.barTintColor;
+            toolbar.tintColor = self.navigationController.navigationBar.tintColor;
             toolbar.translucent = NO;
             self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbar];
         } else {
@@ -347,8 +343,8 @@
             }
             
             self.navigationController.toolbar.barStyle = self.navigationController.navigationBar.barStyle;
-            self.navigationController.toolbar.barTintColor = [UIColor colorWithRed:0.369 green:0.373 blue:0.431 alpha:1.000];
-            self.navigationController.toolbar.tintColor = [UIColor whiteColor];
+            self.navigationController.toolbar.barTintColor = self.navigationController.navigationBar.barTintColor;
+            self.navigationController.toolbar.tintColor = self.navigationController.navigationBar.tintColor;
             self.navigationController.toolbar.translucent = NO;
             self.toolbarItems = items;
         }
