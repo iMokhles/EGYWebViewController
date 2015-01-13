@@ -39,7 +39,22 @@
     [super viewWillAppear:NO];
     
     self.webViewController.title = self.title;
-    self.navigationBar.tintColor = self.barsTintColor;
+    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_7_0
+    	self.navigationBar.tintColor = self.barsTintColor;
+    	self.toolbar.tintColor = self.barsTintColor;
+    	self.navigationItem.backBarButtonItem.tintColor = self.barItemsTintColor;
+    	[self.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObject:self.barItemsTintColor forKey:UITextAttributeTextColor]];
+#endif
+    } else {
+    	self.navigationBar.barTintColor = self.barsTintColor;
+    	self.toolbar.barTintColor = self.barsTintColor;
+    	self.toolbar.tintColor = self.barItemsTintColor;
+        self.toolbar.translucent = NO;
+    	self.navigationItem.backBarButtonItem.tintColor = self.barItemsTintColor;
+        self.navigationBar.tintColor = self.barItemsTintColor;
+        [self.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObject:self.barItemsTintColor forKey:NSForegroundColorAttributeName]];
+    }
 }
 
 

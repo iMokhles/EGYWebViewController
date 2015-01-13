@@ -7,7 +7,7 @@ __*Important note if your project doesn't use ARC*__: you must add the **-fobjc-
 
 **Cocoapods**
 
-* pod **'EGYWebViewController'** 
+* pod **`EGYWebViewController`** 
 
 **EGYWebViewController features:**
 
@@ -19,11 +19,11 @@ __*Important note if your project doesn't use ARC*__: you must add the **-fobjc-
 
 1
 
-![ScreenShot](https://raw.github.com/iMokhles/EGYWebViewController/master/IMG_0133.PNG)  
+![EGYWebViewController ScreenShot](https://raw.github.com/iMokhles/EGYWebViewController/master/MainPhoto.png)  
 
 2
 
-![ScreenShot](https://raw.github.com/iMokhles/EGYWebViewController/master/IMG_0134.PNG)
+![EGYWebViewController](https://raw.github.com/iMokhles/EGYWebViewController/master/ActivityPhoto.png)
 
 **Installation**
 
@@ -49,8 +49,12 @@ EGYModalWebViewController *webViewController = [[EGYModalWebViewController alloc
 </pre>
 
 **Changing the bars tint color**
+<pre>
+@property (nonatomic, strong) UIColor *barsTintColor;
+@property (nonatomic, strong) UIColor *barItemsTintColor;
+</pre>
 
-Only **EGYModalWebViewController** supports custom tint colors using the **barsTintColor** property.
+Only **`EGYModelWebViewController`** supports custom tint colors using the **barsTintColor** property and **barItemsTintColor** property.
 
 **Credits**
 

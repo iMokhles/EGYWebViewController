@@ -135,6 +135,34 @@
     actionBarButtonItem = nil;
 }
 
+//- (void)viewDidAppear:(BOOL)animated {
+//    [super viewDidAppear:YES];
+//    
+//    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
+//#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_7_0
+//        if (self.barsTintColor != nil) {
+//            // Checked if not nil
+//            self.navigationController.navigationBar.tintColor = self.barsTintColor;
+//            self.navigationController.toolbar.tintColor = self.barsTintColor;
+//        } else if (self.barItemsTintColor != nil) {
+//            self.navigationItem.backBarButtonItem.tintColor = self.barItemsTintColor;
+//            [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObject:self.barItemsTintColor forKey:UITextAttributeTextColor]];
+//        }
+//#endif
+//    } else {
+//        if (self.barsTintColor != nil) {
+//            self.navigationController.navigationBar.barTintColor = self.barsTintColor;
+//            self.navigationController.toolbar.barTintColor = self.barsTintColor;
+//            self.navigationController.toolbar.translucent = NO;
+//        } else if (self.barItemsTintColor != nil) {
+//            self.navigationController.toolbar.tintColor = self.barItemsTintColor;
+//            self.navigationController.navigationItem.backBarButtonItem.tintColor = self.barItemsTintColor;
+//            self.navigationController.navigationBar.tintColor = self.barItemsTintColor;
+//            [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObject:self.barItemsTintColor forKey:NSForegroundColorAttributeName]];
+//        }
+//    }
+//}
+
 - (void)viewWillAppear:(BOOL)animated {
     NSAssert(self.navigationController, @"EGYWebViewController needs to be contained in a UINavigationController. If you are presenting EGYWebViewController modally, use EGYWebViewController instead.");
     
@@ -147,7 +175,6 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         [self.navigationController setToolbarHidden:YES animated:animated];
     }
@@ -173,7 +200,7 @@
     mainWebView.delegate = nil;
 }
 
- #pragma mark - Toolbar
+#pragma mark - Toolbar
 
 - (void)updateToolbarItems {
     self.backBarButtonItem.enabled = self.mainWebView.canGoBack;
@@ -185,73 +212,142 @@
     UIBarButtonItem *fixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     fixedSpace.width = 5.0f;
     UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        NSArray *items;
-        CGFloat toolbarWidth = 250.0f;
-        
-        if(self.URL == 0) {
-            toolbarWidth = 200.0f;
-            items = [NSArray arrayWithObjects:
-                     fixedSpace,
-                     refreshStopBarButtonItem,
-                     flexibleSpace,
-                     self.backBarButtonItem,
-                     flexibleSpace,
-                     self.forwardBarButtonItem,
-                     fixedSpace,
-                     nil];
+    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            NSArray *items;
+            CGFloat toolbarWidth = 250.0f;
+            
+            if(self.URL == 0) {
+                toolbarWidth = 200.0f;
+                items = [NSArray arrayWithObjects:
+                         fixedSpace,
+                         refreshStopBarButtonItem,
+                         flexibleSpace,
+                         self.backBarButtonItem,
+                         flexibleSpace,
+                         self.forwardBarButtonItem,
+                         fixedSpace,
+                         nil];
+            } else {
+                items = [NSArray arrayWithObjects:
+                         fixedSpace,
+                         refreshStopBarButtonItem,
+                         flexibleSpace,
+                         self.backBarButtonItem,
+                         flexibleSpace,
+                         self.forwardBarButtonItem,
+                         flexibleSpace,
+                         self.actionBarButtonItem,
+                         fixedSpace,
+                         nil];
+            }
+            
+            UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, toolbarWidth, 44.0f)];
+            toolbar.items = items;
+            toolbar.barStyle = self.navigationController.navigationBar.barStyle;
+            toolbar.tintColor = self.navigationController.navigationBar.tintColor;
+            self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbar];
         } else {
-            items = [NSArray arrayWithObjects:
-                     fixedSpace,
-                     refreshStopBarButtonItem,
-                     flexibleSpace,
-                     self.backBarButtonItem,
-                     flexibleSpace,
-                     self.forwardBarButtonItem,
-                     flexibleSpace,
-                     self.actionBarButtonItem,
-                     fixedSpace,
-                     nil];
+            NSArray *items;
+            
+            if(self.URL == 0) {
+                items = [NSArray arrayWithObjects:
+                         flexibleSpace,
+                         self.backBarButtonItem,
+                         flexibleSpace,
+                         self.forwardBarButtonItem,
+                         flexibleSpace,
+                         refreshStopBarButtonItem,
+                         flexibleSpace,
+                         nil];
+            } else {
+                items = [NSArray arrayWithObjects:
+                         fixedSpace,
+                         self.backBarButtonItem,
+                         flexibleSpace,
+                         self.forwardBarButtonItem,
+                         flexibleSpace,
+                         refreshStopBarButtonItem,
+                         flexibleSpace,
+                         self.actionBarButtonItem,
+                         fixedSpace,
+                         nil];
+            }
+            
+            self.navigationController.toolbar.barStyle = self.navigationController.navigationBar.barStyle;
+            self.navigationController.toolbar.tintColor = self.navigationController.navigationBar.tintColor;
+            self.toolbarItems = items;
         }
-        
-        UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, toolbarWidth, 44.0f)];
-        toolbar.items = items;
-				toolbar.barStyle = self.navigationController.navigationBar.barStyle;
-        toolbar.tintColor = self.navigationController.navigationBar.tintColor;
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbar];
-    } 
-    
-    else {
-        NSArray *items;
-        
-        if(self.URL == 0) {
-            items = [NSArray arrayWithObjects:
-                     flexibleSpace,
-                     self.backBarButtonItem, 
-                     flexibleSpace,
-                     self.forwardBarButtonItem,
-                     flexibleSpace,
-                     refreshStopBarButtonItem,
-                     flexibleSpace,
-                     nil];
+    } else {
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            NSArray *items;
+            CGFloat toolbarWidth = 250.0f;
+            
+            if(self.URL == 0) {
+                toolbarWidth = 200.0f;
+                items = [NSArray arrayWithObjects:
+                         fixedSpace,
+                         refreshStopBarButtonItem,
+                         flexibleSpace,
+                         self.backBarButtonItem,
+                         flexibleSpace,
+                         self.forwardBarButtonItem,
+                         fixedSpace,
+                         nil];
+            } else {
+                items = [NSArray arrayWithObjects:
+                         fixedSpace,
+                         refreshStopBarButtonItem,
+                         flexibleSpace,
+                         self.backBarButtonItem,
+                         flexibleSpace,
+                         self.forwardBarButtonItem,
+                         flexibleSpace,
+                         self.actionBarButtonItem,
+                         fixedSpace,
+                         nil];
+            }
+            
+            UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, toolbarWidth, 44.0f)];
+            toolbar.items = items;
+            toolbar.barStyle = self.navigationController.navigationBar.barStyle;
+            toolbar.barTintColor = self.navigationController.navigationBar.barTintColor;
+            toolbar.tintColor = self.navigationController.navigationBar.tintColor;
+            toolbar.translucent = NO;
+            self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbar];
         } else {
-            items = [NSArray arrayWithObjects:
-                     fixedSpace,
-                     self.backBarButtonItem, 
-                     flexibleSpace,
-                     self.forwardBarButtonItem,
-                     flexibleSpace,
-                     refreshStopBarButtonItem,
-                     flexibleSpace,
-                     self.actionBarButtonItem,
-                     fixedSpace,
-                     nil];
+            NSArray *items;
+            
+            if(self.URL == 0) {
+                items = [NSArray arrayWithObjects:
+                         flexibleSpace,
+                         self.backBarButtonItem,
+                         flexibleSpace,
+                         self.forwardBarButtonItem,
+                         flexibleSpace,
+                         refreshStopBarButtonItem,
+                         flexibleSpace,
+                         nil];
+            } else {
+                items = [NSArray arrayWithObjects:
+                         fixedSpace,
+                         self.backBarButtonItem,
+                         flexibleSpace,
+                         self.forwardBarButtonItem,
+                         flexibleSpace,
+                         refreshStopBarButtonItem,
+                         flexibleSpace,
+                         self.actionBarButtonItem,
+                         fixedSpace,
+                         nil];
+            }
+            
+            self.navigationController.toolbar.barStyle = self.navigationController.navigationBar.barStyle;
+            self.navigationController.toolbar.barTintColor = self.navigationController.navigationBar.barTintColor;
+            self.navigationController.toolbar.tintColor = self.navigationController.navigationBar.tintColor;
+            self.navigationController.toolbar.translucent = NO;
+            self.toolbarItems = items;
         }
-        
-				self.navigationController.toolbar.barStyle = self.navigationController.navigationBar.barStyle;
-				self.navigationController.toolbar.tintColor = self.navigationController.navigationBar.tintColor;
-        self.toolbarItems = items;
     }
 }
 
@@ -265,6 +361,7 @@
 
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
+    [webView stopLoading];
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     
     self.navigationItem.title = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
@@ -272,6 +369,7 @@
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+    [webView stopLoading];
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     [self updateToolbarItems];
 }
@@ -296,39 +394,39 @@
 }
 
 - (void)actionButtonClicked:(id)sender {
-
+    
     // activityItems
     NSURL *url = self.mainWebView.request.URL;
-   //NSString *text = [NSString stringWithFormat:@"This link shared from %@ Application", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"]];
+    //NSString *text = [NSString stringWithFormat:@"This link shared from %@ Application", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"]];
     NSArray *activityItems;
     activityItems = @[url /*text*/];
-
+    
     // activities
     TUSafariActivity     *safariActivity     = [[TUSafariActivity alloc] init];
     ARChromeActivity     *chromeActivity     = [[ARChromeActivity alloc] init];
     MLCruxActivity       *cruxActivity       = [[MLCruxActivity alloc] init];
-
+    
     NSArray *activities = @[
-    safariActivity,
-    chromeActivity,
-    cruxActivity,];
-
+                            safariActivity,
+                            chromeActivity,
+                            cruxActivity,];
+    
     // UIActivityViewController
     UIActivityViewController *activityView = [[UIActivityViewController alloc] initWithActivityItems:activityItems
                                                                                applicationActivities:activities];
-
+    
     /* Exclude default activity types for demo.
-       activityView.excludedActivityTypes = @[
-    //    UIActivityTypeAssignToContact,
-        UIActivityTypeCopyToPasteboard,
-        UIActivityTypePostToFacebook,
-        UIActivityTypePostToTwitter,
-        UIActivityTypePostToWeibo,
-    //    UIActivityTypePrint,
-        UIActivityTypeMail,
-        UIActivityTypeMessage,
-    //    UIActivityTypeSaveToCameraRoll,
-        ];
+     activityView.excludedActivityTypes = @[
+     //  UIActivityTypeAssignToContact,
+     UIActivityTypeCopyToPasteboard,
+     UIActivityTypePostToFacebook,
+     UIActivityTypePostToTwitter,
+     UIActivityTypePostToWeibo,
+     //  UIActivityTypePrint,
+     UIActivityTypeMail,
+     UIActivityTypeMessage,
+     //  UIActivityTypeSaveToCameraRoll,
+     ];
      */
     // show
     [self presentViewController:activityView animated:YES completion:nil];
