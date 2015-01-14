@@ -11,6 +11,8 @@
 #import "ARChromeActivity.h"
 #import "MLCruxActivity.h"
 
+#define USE_WEBKIT_DEFAULT YES
+
 @interface EGYWebViewController () <UIWebViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate>
 
 @property (nonatomic, strong, readonly) UIBarButtonItem *backBarButtonItem;
@@ -103,16 +105,27 @@
 
 #pragma mark - Initialization
 
-- (id)initWithAddress:(NSString *)urlString {
+#ifdef __IPHONE_8_0
+#endif
+
+- (instancetype)initWithAddress:(NSString *)urlString {
+    return [self initWithURL:[NSURL URLWithString:urlString] useWebkit:USE_WEBKIT_DEFAULT];
+}
+
+- (instancetype)initWithAddress:(NSString *)urlString useWebkit:(BOOL)useWebkit {
     return [self initWithURL:[NSURL URLWithString:urlString]];
 }
 
-- (id)initWithURL:(NSURL*)pageURL {
+- (instancetype)initWithURL:(NSURL*)pageURL {
+    return [self initWithURL:pageURL useWebkit:USE_WEBKIT_DEFAULT];
+}
+
+- (instancetype)initWithURL:(NSURL*)pageURL useWebkit:(BOOL)useWebkit {
     
     if(self = [super init]) {
         self.URL = pageURL;
 #ifdef __IPHONE_8_0
-        _useWebkit = YES;
+        _useWebkit = useWebkit;
 #endif
     }
 
@@ -493,11 +506,21 @@
 - (void)actionButtonClicked:(id)sender {
     
     // activityItems
-    NSURL *url = self.mainWebView.request.URL;
+    NSURL *url;
+    if (self.mainWebView) {
+        url = self.mainWebView.request.URL;
+    } else {
+        url = self.URL;
+    }
     //NSString *text = [NSString stringWithFormat:@"This link shared from %@ Application", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"]];
     NSArray *activityItems;
-    activityItems = @[url /*text*/];
-    
+    if (url) {
+        activityItems = @[url /*text*/];
+    } else {
+        NSLog(@"No url was found");
+        return;
+    }
+
     // activities
     TUSafariActivity     *safariActivity     = [[TUSafariActivity alloc] init];
     ARChromeActivity     *chromeActivity     = [[ARChromeActivity alloc] init];

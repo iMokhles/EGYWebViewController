@@ -22,10 +22,13 @@
 @interface EGYWebViewController : UIViewController
 #ifdef __IPHONE_8_0
 <WKUIDelegate, WKNavigationDelegate>
+
+- (instancetype)initWithAddress:(NSString *)urlString useWebkit:(BOOL)useWebkit;
+- (instancetype)initWithURL:(NSURL*)pageURL useWebkit:(BOOL)useWebkit;
 #endif
 
-- (id)initWithAddress:(NSString*)urlString;
-- (id)initWithURL:(NSURL*)URL;
+- (instancetype)initWithAddress:(NSString*)urlString;
+- (instancetype)initWithURL:(NSURL*)URL;
 
 // Delete This error after you see the deprecate message ;)
 // #error EGYWebViewController don't use the deprecated items (barsTintColor & barItemsTintColor) when you pushing it through UINavigationController.

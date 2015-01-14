@@ -68,12 +68,14 @@
 
 - (void)_pushWebViewController:(BOOL)useWebkit {
     NSURL *URL = [NSURL URLWithString:@"http://yahoo.com"];
-	EGYWebViewController *webViewController = [[EGYWebViewController alloc] initWithURL:URL];
+#ifdef __IPHONE_8_0
+    EGYWebViewController *webViewController = [[EGYWebViewController alloc] initWithURL:URL useWebkit:useWebkit];
+#else
+    EGYWebViewController *webViewController = [[EGYWebViewController alloc] initWithURL:URL];
+#endif
+
     // [webViewController setBarItemsTintColor:[UIColor whiteColor]];
     // [webViewController setBarsTintColor:[UIColor blackColor]];
-#ifdef __IPHONE_8_0
-    webViewController.useWebkit = useWebkit;
-#endif
 	[self.navigationController pushViewController:webViewController animated:YES];
 }
 
@@ -81,13 +83,14 @@
 - (void)_presentWebViewController:(BOOL)useWebkit {
     NSURL *URL                                   = [NSURL URLWithString:@"http://twitter.com/iMokhles"];
 
+#ifdef __IPHONE_8_0
+    EGYModalWebViewController *webViewController = [[EGYModalWebViewController alloc] initWithURL:URL useWebkit:useWebkit];
+#else
     EGYModalWebViewController *webViewController = [[EGYModalWebViewController alloc] initWithURL:URL];
+#endif
     webViewController.barItemsTintColor          = [UIColor redColor];
     webViewController.barsTintColor              = [UIColor blackColor];
     webViewController.modalPresentationStyle     = UIModalPresentationPageSheet;
-#ifdef __IPHONE_8_0
-    webViewController.useWebkit = useWebkit;
-#endif
 	[self presentModalViewController:webViewController animated:YES];
 }
 

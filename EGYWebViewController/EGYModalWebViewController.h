@@ -13,6 +13,11 @@
 
 @interface EGYModalWebViewController : UINavigationController
 
+#ifdef __IPHONE_8_0
+- (id)initWithAddress:(NSString*)urlString useWebkit:(BOOL)useWebkit;
+- (id)initWithURL:(NSURL *)URL useWebkit:(BOOL)useWebkit;
+#endif
+
 - (id)initWithAddress:(NSString*)urlString;
 - (id)initWithURL:(NSURL *)URL;
 

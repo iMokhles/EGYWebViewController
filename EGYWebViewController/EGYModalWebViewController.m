@@ -22,6 +22,17 @@
 
 #pragma mark - Initialization
 
+- (id)initWithAddress:(NSString*)urlString useWebkit:(BOOL)useWebkit {
+    return [self initWithURL:[NSURL URLWithString:urlString] useWebkit:useWebkit];
+}
+
+- (id)initWithURL:(NSURL *)URL useWebkit:(BOOL)useWebkit {
+    self.webViewController = [[EGYWebViewController alloc] initWithURL:URL useWebkit:useWebkit];
+    if (self = [super initWithRootViewController:self.webViewController]) {
+        self.webViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:webViewController action:@selector(doneButtonClicked:)];
+    }
+    return self;
+}
 
 - (id)initWithAddress:(NSString*)urlString {
     return [self initWithURL:[NSURL URLWithString:urlString]];
