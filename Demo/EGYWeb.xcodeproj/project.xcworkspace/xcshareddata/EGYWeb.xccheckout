@@ -10,29 +10,29 @@
 	<string>EGYWeb</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>7F6607D9-BD20-4E13-B949-D6EADF250306</key>
-		<string>https://github.com/iMokhles/EGYWebViewController.git</string>
+		<key>7C71F1155C3D075FBDF96AD4A2E28F97526063A4</key>
+		<string>github.com:JoeMatt/EGYWebViewController.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>Demo/EGYWeb.xcodeproj/project.xcworkspace</string>
+	<string>Demo/EGYWeb.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>7F6607D9-BD20-4E13-B949-D6EADF250306</key>
+		<key>7C71F1155C3D075FBDF96AD4A2E28F97526063A4</key>
 		<string>../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/iMokhles/EGYWebViewController.git</string>
+	<string>github.com:JoeMatt/EGYWebViewController.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>7F6607D9-BD20-4E13-B949-D6EADF250306</string>
+	<string>7C71F1155C3D075FBDF96AD4A2E28F97526063A4</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>7F6607D9-BD20-4E13-B949-D6EADF250306</string>
+			<string>7C71F1155C3D075FBDF96AD4A2E28F97526063A4</string>
 			<key>IDESourceControlWCCName</key>
 			<string>EGYWebViewController</string>
 		</dict>
