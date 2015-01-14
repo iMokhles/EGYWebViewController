@@ -37,6 +37,10 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:NO];
+
+#ifdef __IPHONE_8_0
+    self.webViewController.useWebkit = self.useWebkit;
+#endif
     
     self.webViewController.title = self.title;
     if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {

@@ -18,4 +18,7 @@
 
 @property (nonatomic, strong) UIColor *barsTintColor;
 @property (nonatomic, strong) UIColor *barItemsTintColor;
+#ifdef __IPHONE_8_0
+@property (nonatomic, assign) BOOL useWebkit;
+#endif
 @end

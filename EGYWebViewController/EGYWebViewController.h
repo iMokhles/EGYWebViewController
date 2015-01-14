@@ -11,11 +11,18 @@
 #import <Foundation/Foundation.h>
 #import "EGYModalWebViewController.h"
 
+#ifdef __IPHONE_8_0
+@import WebKit;
+#endif
+
 // #define deprecated __attribute__((deprecated))
 #define noreturn __attribute__((noreturn)) void
 #define unused __attribute__((unused))
 
 @interface EGYWebViewController : UIViewController
+#ifdef __IPHONE_8_0
+<WKUIDelegate, WKNavigationDelegate>
+#endif
 
 - (id)initWithAddress:(NSString*)urlString;
 - (id)initWithURL:(NSURL*)URL;
@@ -25,6 +32,11 @@
 
 @property (nonatomic, strong) UIColor *barsTintColor    __attribute__((deprecated("not finished yet barsTintColor")));
 @property (nonatomic, strong) UIColor *barItemsTintColor __attribute__((deprecated("not finished yet barItemsTintColor")));
+
+#ifdef __IPHONE_8_0
+    // Option to use webkit over UIWebview. Default YES
+@property (nonatomic, assign) BOOL useWebkit;
+#endif
 
 // Fixing @selector warning.
 - (void)doneButtonClicked:(id)sender;
