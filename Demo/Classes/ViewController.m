@@ -31,18 +31,20 @@
     [self.view addSubview:pushButton];
 
 #ifdef __IPHONE_8_0
-    UIButton *pushButtonWK = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [pushButtonWK setFrame:CGRectMake(20, 325, 250, 50)];
-    [pushButtonWK setTitle:@"PushEGYWebViewController Webkit" forState:UIControlStateNormal];
-    [pushButtonWK addTarget:self action:@selector(pushWebKitViewController) forControlEvents:UIControlEventTouchUpInside];
-    UIButton *presentButtonWK = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [presentButtonWK setFrame:CGRectMake(20, 275, 250, 50)];
-    [presentButtonWK setTitle:@"PresentEGYWebViewController Webkit" forState:UIControlStateNormal];
-    [presentButtonWK sizeToFit];
-    [presentButtonWK addTarget:self action:@selector(presentWebKitViewController) forControlEvents:UIControlEventTouchUpInside];
+    if (NSClassFromString(@"WKWebView")) {
+        UIButton *pushButtonWK = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [pushButtonWK setFrame:CGRectMake(20, 325, 250, 50)];
+        [pushButtonWK setTitle:@"PushEGYWebViewController Webkit" forState:UIControlStateNormal];
+        [pushButtonWK addTarget:self action:@selector(pushWebKitViewController) forControlEvents:UIControlEventTouchUpInside];
+        UIButton *presentButtonWK = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [presentButtonWK setFrame:CGRectMake(20, 275, 250, 50)];
+        [presentButtonWK setTitle:@"PresentEGYWebViewController Webkit" forState:UIControlStateNormal];
+        [presentButtonWK sizeToFit];
+        [presentButtonWK addTarget:self action:@selector(presentWebKitViewController) forControlEvents:UIControlEventTouchUpInside];
 
-    [self.view addSubview:pushButtonWK];
-    [self.view addSubview:presentButtonWK];
+        [self.view addSubview:pushButtonWK];
+        [self.view addSubview:presentButtonWK];
+    }
 #endif
 }
 -(void)pushWebViewController{
