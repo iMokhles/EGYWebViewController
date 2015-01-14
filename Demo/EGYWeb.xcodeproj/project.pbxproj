@@ -45,6 +45,7 @@
 		4333840919B08BA100081B54 /* Safari7-iPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4333840519B08BA100081B54 /* Safari7-iPad@2x.png */; };
 		4333840A19B08BA100081B54 /* Safari7.png in Resources */ = {isa = PBXBuildFile; fileRef = 4333840619B08BA100081B54 /* Safari7.png */; };
 		4333840B19B08BA100081B54 /* Safari7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4333840719B08BA100081B54 /* Safari7@2x.png */; };
+		B39CE1441A65F1D500F74A8B /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B39CE1431A65F1D500F74A8B /* WebKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		D5FA63C516A8707A0087531C /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D5FA63C416A8707A0087531C /* Default-568h@2x.png */; };
 /* End PBXBuildFile section */
 
@@ -120,6 +121,7 @@
 		4333840619B08BA100081B54 /* Safari7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Safari7.png; sourceTree = "<group>"; };
 		4333840719B08BA100081B54 /* Safari7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Safari7@2x.png"; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* EGYWeb-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "EGYWeb-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		B39CE1431A65F1D500F74A8B /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		D5FA63C416A8707A0087531C /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -128,6 +130,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B39CE1441A65F1D500F74A8B /* WebKit.framework in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				221458A013133B3600ED7D83 /* MessageUI.framework in Frameworks */,
@@ -217,6 +220,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B39CE1431A65F1D500F74A8B /* WebKit.framework */,
 				2214589F13133B3600ED7D83 /* MessageUI.framework */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
@@ -467,7 +471,7 @@
 				GCC_PREFIX_HEADER = EGYWeb_Prefix.pch;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "EGYWeb-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = EGYWeb;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -484,7 +488,7 @@
 				GCC_PREFIX_HEADER = EGYWeb_Prefix.pch;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "EGYWeb-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = EGYWeb;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
