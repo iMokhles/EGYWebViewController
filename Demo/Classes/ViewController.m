@@ -66,10 +66,10 @@
 #endif
 
 
-- (void)_pushWebViewController:(BOOL)useWebkit {
+- (void)_pushWebViewController:(BOOL)usingWebkit {
     NSURL *URL = [NSURL URLWithString:@"http://yahoo.com"];
 #ifdef __IPHONE_8_0
-    EGYWebViewController *webViewController = [[EGYWebViewController alloc] initWithURL:URL useWebkit:useWebkit];
+    EGYWebViewController *webViewController = [[EGYWebViewController alloc] initWithURL:URL usingWebkit:usingWebkit];
 #else
     EGYWebViewController *webViewController = [[EGYWebViewController alloc] initWithURL:URL];
 #endif
@@ -80,11 +80,11 @@
 }
 
 
-- (void)_presentWebViewController:(BOOL)useWebkit {
+- (void)_presentWebViewController:(BOOL)usingWebkit {
     NSURL *URL                                   = [NSURL URLWithString:@"http://twitter.com/iMokhles"];
 
 #ifdef __IPHONE_8_0
-    EGYModalWebViewController *webViewController = [[EGYModalWebViewController alloc] initWithURL:URL useWebkit:useWebkit];
+    EGYModalWebViewController *webViewController = [[EGYModalWebViewController alloc] initWithURL:URL usingWebkit:usingWebkit];
 #else
     EGYModalWebViewController *webViewController = [[EGYModalWebViewController alloc] initWithURL:URL];
 #endif

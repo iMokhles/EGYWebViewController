@@ -11,8 +11,6 @@
 #import "ARChromeActivity.h"
 #import "MLCruxActivity.h"
 
-#define USE_WEBKIT_DEFAULT YES
-
 @interface EGYWebViewController () <UIWebViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate>
 
 @property (nonatomic, strong, readonly) UIBarButtonItem *backBarButtonItem;
@@ -25,6 +23,7 @@
 
 #ifdef __IPHONE_8_0
 @property (nonatomic, strong) WKWebView *mainWebKitView;
+@property (nonatomic, assign, readwrite) BOOL usingWebkit;
 #else
     // Leaving this and lettingit be null will prevent
     // needing macros for every peice of code that can
@@ -105,27 +104,24 @@
 
 #pragma mark - Initialization
 
-#ifdef __IPHONE_8_0
-#endif
-
 - (instancetype)initWithAddress:(NSString *)urlString {
-    return [self initWithURL:[NSURL URLWithString:urlString] useWebkit:USE_WEBKIT_DEFAULT];
+    return [self initWithURL:[NSURL URLWithString:urlString] usingWebkit:USE_WEBKIT_DEFAULT];
 }
 
-- (instancetype)initWithAddress:(NSString *)urlString useWebkit:(BOOL)useWebkit {
+- (instancetype)initWithAddress:(NSString *)urlString usingWebkit:(BOOL)usingWebkit {
     return [self initWithURL:[NSURL URLWithString:urlString]];
 }
 
 - (instancetype)initWithURL:(NSURL*)pageURL {
-    return [self initWithURL:pageURL useWebkit:USE_WEBKIT_DEFAULT];
+    return [self initWithURL:pageURL usingWebkit:USE_WEBKIT_DEFAULT];
 }
 
-- (instancetype)initWithURL:(NSURL*)pageURL useWebkit:(BOOL)useWebkit {
+- (instancetype)initWithURL:(NSURL*)pageURL usingWebkit:(BOOL)usingWebkit {
     
     if(self = [super init]) {
         self.URL = pageURL;
 #ifdef __IPHONE_8_0
-        _useWebkit = useWebkit;
+        _usingWebkit = usingWebkit;
 #endif
     }
 
@@ -146,7 +142,7 @@
         // Use of macro here because class is use explicetely
         // elsewhere code just nil checks _mainWebKitView
 #ifdef __IPHONE_8_0
-    if ( self.useWebkit && NSClassFromString(@"WKWebView") != nil ) {
+    if ( self.usingWebkit && NSClassFromString(@"WKWebView") != nil ) {
         WKWebViewConfiguration *config = [WKWebViewConfiguration new];
         _mainWebKitView = [[WKWebView alloc] initWithFrame:[UIScreen mainScreen].bounds configuration:config];
         _mainWebKitView.navigationDelegate = self;

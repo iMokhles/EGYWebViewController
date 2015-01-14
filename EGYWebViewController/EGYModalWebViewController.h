@@ -14,8 +14,8 @@
 @interface EGYModalWebViewController : UINavigationController
 
 #ifdef __IPHONE_8_0
-- (id)initWithAddress:(NSString*)urlString useWebkit:(BOOL)useWebkit;
-- (id)initWithURL:(NSURL *)URL useWebkit:(BOOL)useWebkit;
+- (id)initWithAddress:(NSString*)urlString usingWebkit:(BOOL)usingWebkit;
+- (id)initWithURL:(NSURL *)URL usingWebkit:(BOOL)usingWebkit;
 #endif
 
 - (id)initWithAddress:(NSString*)urlString;
@@ -24,6 +24,6 @@
 @property (nonatomic, strong) UIColor *barsTintColor;
 @property (nonatomic, strong) UIColor *barItemsTintColor;
 #ifdef __IPHONE_8_0
-@property (nonatomic, assign) BOOL useWebkit;
+@property (nonatomic, assign, readonly) BOOL usingWebkit;
 #endif
 @end

@@ -11,6 +11,8 @@
 #import <Foundation/Foundation.h>
 #import "EGYModalWebViewController.h"
 
+#define USE_WEBKIT_DEFAULT YES
+
 #ifdef __IPHONE_8_0
 @import WebKit;
 #endif
@@ -23,8 +25,8 @@
 #ifdef __IPHONE_8_0
 <WKUIDelegate, WKNavigationDelegate>
 
-- (instancetype)initWithAddress:(NSString *)urlString useWebkit:(BOOL)useWebkit;
-- (instancetype)initWithURL:(NSURL*)pageURL useWebkit:(BOOL)useWebkit;
+- (instancetype)initWithAddress:(NSString *)urlString usingWebkit:(BOOL)usingWebkit;
+- (instancetype)initWithURL:(NSURL*)pageURL usingWebkit:(BOOL)usingWebkit;
 #endif
 
 - (instancetype)initWithAddress:(NSString*)urlString;
@@ -38,7 +40,7 @@
 
 #ifdef __IPHONE_8_0
     // Option to use webkit over UIWebview. Default YES
-@property (nonatomic, assign) BOOL useWebkit;
+@property (nonatomic, assign, readonly) BOOL usingWebkit;
 #endif
 
 // Fixing @selector warning.
