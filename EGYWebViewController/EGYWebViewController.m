@@ -20,6 +20,17 @@
 @property (nonatomic, strong, readonly) UIBarButtonItem *actionBarButtonItem;
 
 @property (nonatomic, strong) UIWebView *mainWebView;
+
+#ifdef __IPHONE_8_0
+@property (nonatomic, strong) WKWebView *mainWebKitView;
+@property (nonatomic, assign, readwrite) BOOL usingWebkit;
+#else
+    // Leaving this and lettingit be null will prevent
+    // needing macros for every peice of code that can
+    // optionally use webkit.
+@property (nonatomic, strong) id mainWebKitView;
+#endif
+
 @property (nonatomic, strong) NSURL *URL;
 
 - (id)initWithAddress:(NSString*)urlString;
@@ -93,31 +104,60 @@
 
 #pragma mark - Initialization
 
-- (id)initWithAddress:(NSString *)urlString {
+- (instancetype)initWithAddress:(NSString *)urlString {
+    return [self initWithURL:[NSURL URLWithString:urlString] usingWebkit:USE_WEBKIT_DEFAULT];
+}
+
+- (instancetype)initWithAddress:(NSString *)urlString usingWebkit:(BOOL)usingWebkit {
     return [self initWithURL:[NSURL URLWithString:urlString]];
 }
 
-- (id)initWithURL:(NSURL*)pageURL {
+- (instancetype)initWithURL:(NSURL*)pageURL {
+    return [self initWithURL:pageURL usingWebkit:USE_WEBKIT_DEFAULT];
+}
+
+- (instancetype)initWithURL:(NSURL*)pageURL usingWebkit:(BOOL)usingWebkit {
     
     if(self = [super init]) {
         self.URL = pageURL;
+#ifdef __IPHONE_8_0
+        _usingWebkit = usingWebkit;
+#endif
     }
-    
+
     return self;
 }
 
 - (void)loadURL:(NSURL *)pageURL {
-    [mainWebView loadRequest:[NSURLRequest requestWithURL:pageURL]];
+    if (_mainWebKitView) {
+        [_mainWebKitView loadRequest:[NSURLRequest requestWithURL:pageURL]];
+    } else {
+        [mainWebView loadRequest:[NSURLRequest requestWithURL:pageURL]];
+    }
 }
 
 #pragma mark - View lifecycle
 
 - (void)loadView {
-    mainWebView = [[UIWebView alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    mainWebView.delegate = self;
-    mainWebView.scalesPageToFit = YES;
+        // Use of macro here because class is use explicetely
+        // elsewhere code just nil checks _mainWebKitView
+#ifdef __IPHONE_8_0
+    if ( self.usingWebkit && NSClassFromString(@"WKWebView") != nil ) {
+        WKWebViewConfiguration *config = [WKWebViewConfiguration new];
+        _mainWebKitView = [[WKWebView alloc] initWithFrame:[UIScreen mainScreen].bounds configuration:config];
+        _mainWebKitView.navigationDelegate = self;
+        _mainWebKitView.UIDelegate         = self;
+        self.view                          = _mainWebKitView;
+    } else {
+#endif
+        mainWebView = [[UIWebView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+        mainWebView.delegate        = self;
+        mainWebView.scalesPageToFit = YES;
+        self.view                   = mainWebView;
+#ifdef __IPHONE_8_0
+    }
+#endif
     [self loadURL:self.URL];
-    self.view = mainWebView;
 }
 
 - (void)viewDidLoad {
@@ -128,6 +168,7 @@
 - (void)viewDidUnload {
     [super viewDidUnload];
     mainWebView = nil;
+    _mainWebKitView = nil;
     backBarButtonItem = nil;
     forwardBarButtonItem = nil;
     refreshBarButtonItem = nil;
@@ -195,23 +236,45 @@
 
 - (void)dealloc
 {
-    [mainWebView stopLoading];
- 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-    mainWebView.delegate = nil;
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    if (_mainWebKitView) {
+        [_mainWebKitView stopLoading];
+        _mainWebKitView.UIDelegate = nil;
+        _mainWebKitView.navigationDelegate = nil;
+    }
+    if (mainWebView) {
+        [mainWebView stopLoading];
+        mainWebView.delegate = nil;
+    }
 }
 
 #pragma mark - Toolbar
 
 - (void)updateToolbarItems {
-    self.backBarButtonItem.enabled = self.mainWebView.canGoBack;
-    self.forwardBarButtonItem.enabled = self.mainWebView.canGoForward;
-    self.actionBarButtonItem.enabled = !self.mainWebView.isLoading;
+    UIBarButtonItem *refreshStopBarButtonItem;
+
+        // TODO :: Should use KVO for webKit
+    if (_mainWebKitView) {
+        self.backBarButtonItem.enabled    = self.mainWebKitView.canGoBack;
+        self.forwardBarButtonItem.enabled = self.mainWebKitView.canGoForward;
+        self.actionBarButtonItem.enabled  = !self.mainWebKitView.isLoading;
+        refreshStopBarButtonItem          = self.mainWebKitView.isLoading ?
+                                            self.stopBarButtonItem : self.refreshBarButtonItem;
+    } else {
+        self.backBarButtonItem.enabled    = self.mainWebView.canGoBack;
+        self.forwardBarButtonItem.enabled = self.mainWebView.canGoForward;
+        self.actionBarButtonItem.enabled  = !self.mainWebView.isLoading;
+        refreshStopBarButtonItem          = self.mainWebView.isLoading ?
+                                            self.stopBarButtonItem : self.refreshBarButtonItem;
+    }
     
-    UIBarButtonItem *refreshStopBarButtonItem = self.mainWebView.isLoading ? self.stopBarButtonItem : self.refreshBarButtonItem;
-    
-    UIBarButtonItem *fixedSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    fixedSpace.width = 5.0f;
-    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    UIBarButtonItem *fixedSpace    = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
+                                                                                target:nil
+                                                                                action:nil];
+    fixedSpace.width               = 5.0f;
+    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                                                                   target:nil
+                                                                                   action:nil];
     if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
             NSArray *items;
@@ -361,7 +424,6 @@
 
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
-    [webView stopLoading];
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     
     self.navigationItem.title = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
@@ -369,38 +431,90 @@
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
-    [webView stopLoading];
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     [self updateToolbarItems];
 }
 
+#ifdef __IPHONE_8_0
+#pragma mark - WKNavigationDelegate
+- (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation {
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    [self updateToolbarItems];
+}
+
+- (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation withError:(NSError *)error {
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    [self updateToolbarItems];
+}
+
+- (void)webView:(WKWebView *)webView didCommitNavigation:(WKNavigation *)navigation {
+    [self updateToolbarItems];
+}
+- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+
+    self.navigationItem.title = webView.title;
+    [self updateToolbarItems];
+}
+- (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error {
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    [self updateToolbarItems];
+}
+#endif
+
 #pragma mark - Target actions
 
 - (void)goBackClicked:(UIBarButtonItem *)sender {
-    [mainWebView goBack];
+    if (_mainWebKitView) {
+        [_mainWebKitView goBack];
+    } else {
+        [mainWebView goBack];
+    }
 }
 
 - (void)goForwardClicked:(UIBarButtonItem *)sender {
-    [mainWebView goForward];
+    if (_mainWebKitView) {
+        [_mainWebKitView goForward];
+    } else {
+        [mainWebView goForward];
+    }
 }
 
 - (void)reloadClicked:(UIBarButtonItem *)sender {
-    [mainWebView reload];
+    if (_mainWebKitView) {
+        [_mainWebKitView reload];
+    } else {
+        [mainWebView reload];
+    }
 }
 
 - (void)stopClicked:(UIBarButtonItem *)sender {
-    [mainWebView stopLoading];
-	[self updateToolbarItems];
+    if (_mainWebKitView) {
+        [_mainWebKitView stopLoading];
+    } else {
+        [mainWebView stopLoading];
+    }
+    [self updateToolbarItems];
 }
 
 - (void)actionButtonClicked:(id)sender {
     
     // activityItems
-    NSURL *url = self.mainWebView.request.URL;
+    NSURL *url;
+    if (self.mainWebView) {
+        url = self.mainWebView.request.URL;
+    } else {
+        url = self.URL;
+    }
     //NSString *text = [NSString stringWithFormat:@"This link shared from %@ Application", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"]];
     NSArray *activityItems;
-    activityItems = @[url /*text*/];
-    
+    if (url) {
+        activityItems = @[url /*text*/];
+    } else {
+        NSLog(@"No url was found");
+        return;
+    }
+
     // activities
     TUSafariActivity     *safariActivity     = [[TUSafariActivity alloc] init];
     ARChromeActivity     *chromeActivity     = [[ARChromeActivity alloc] init];

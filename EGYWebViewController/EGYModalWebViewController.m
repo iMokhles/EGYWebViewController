@@ -12,7 +12,9 @@
 @interface EGYModalWebViewController ()
 
 @property (nonatomic, strong) EGYWebViewController *webViewController;
-
+#ifdef __IPHONE_8_0
+@property (nonatomic, assign, readwrite) BOOL usingWebkit;
+#endif
 @end
 
 
@@ -22,21 +24,29 @@
 
 #pragma mark - Initialization
 
-
-- (id)initWithAddress:(NSString*)urlString {
-    return [self initWithURL:[NSURL URLWithString:urlString]];
+- (id)initWithAddress:(NSString*)urlString usingWebkit:(BOOL)usingWebkit {
+    return [self initWithURL:[NSURL URLWithString:urlString] usingWebkit:usingWebkit];
 }
 
-- (id)initWithURL:(NSURL *)URL {
-    self.webViewController = [[EGYWebViewController alloc] initWithURL:URL];
+- (id)initWithURL:(NSURL *)URL usingWebkit:(BOOL)usingWebkit {
+    self.webViewController = [[EGYWebViewController alloc] initWithURL:URL usingWebkit:usingWebkit];
     if (self = [super initWithRootViewController:self.webViewController]) {
         self.webViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:webViewController action:@selector(doneButtonClicked:)];
     }
     return self;
 }
 
+- (id)initWithAddress:(NSString*)urlString {
+    return [self initWithURL:[NSURL URLWithString:urlString] usingWebkit:USE_WEBKIT_DEFAULT];
+}
+
+- (id)initWithURL:(NSURL *)URL {
+    return [self initWithURL:URL usingWebkit:USE_WEBKIT_DEFAULT];
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:NO];
+
     
     self.webViewController.title = self.title;
     if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
