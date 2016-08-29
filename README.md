@@ -5,7 +5,7 @@ In-App Browser for iOS Apps Support UIActivity ;)
 
 __*Important note if your project doesn't use ARC*__: you must add the **-fobjc-arc** compiler flag to **EGYWebViewController.m** and **EGYModalWebViewController.m** in Target Settings > Build Phases > Compile Sources.
 
-**Cocoapods**
+**CocoaPods**
 
 * pod **`EGYWebViewController`** 
 
